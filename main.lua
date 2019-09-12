@@ -26,6 +26,8 @@ function love.load()
   spawnMaxTime = 3
   spawnerTime = 0
   doneOnce = false
+  zombiesLevel = 1
+  difficultyUpgradeCounter = 0
 end
 
 
@@ -145,6 +147,11 @@ function ZombieHealthLogic()
       if player.kills % 10 == 0 then
         player.skillPoints = player.skillPoints + 1
         doneOnce = false
+        difficultyUpgradeCounter = difficultyUpgradeCounter +1
+        if difficultyUpgradeCounter == 3 then
+          zombiesLevel = zombiesLevel + 0.3
+          difficultyUpgradeCounter = 0
+        end
       end
       table.remove(zombiesArray, i)
     end
@@ -257,8 +264,8 @@ function SpawnZombie()
   zombie.width = sprites.zombie:getWidth()/2
   zombie.height = sprites.zombie:getHeight()/2
   zombie.rotation = 0
-  zombie.health = math.random(60,200)
-  zombie.damage = math.random(10,40)
+  zombie.health = math.random(60,200) * zombiesLevel
+  zombie.damage = math.random(10,40) * zombiesLevel
   zombie.bShouldMove = true
   zombie.bIsDead = false
   local side = math.random(1,4)
